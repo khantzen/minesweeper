@@ -36,4 +36,28 @@ public class MineField {
     public MineCell getCell(int line, int column) {
         return this.board[line][column];
     }
+
+    public String getStatus() {
+        int uncoveredCell = 0;
+
+        for (MineCell[] cellLine : this.board) {
+            for (MineCell cell : cellLine) {
+                if (!cell.isHidden()) {
+                    if (cell.isMined()) {
+                        return "DOOMED";
+                    } else {
+                        uncoveredCell++;
+                    }
+                }
+            }
+        }
+
+        int totalCells = getTotalCells();
+
+        return uncoveredCell == totalCells ? "TERMINATED" : "ON_GOING";
+    }
+
+    private int getTotalCells() {
+        return this.board.length * this.board[0].length;
+    }
 }

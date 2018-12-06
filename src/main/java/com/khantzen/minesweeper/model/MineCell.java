@@ -13,6 +13,10 @@ public class MineCell {
         return cellValue;
     }
 
+    public boolean isMined() {
+        return this.cellValue == -1;
+    }
+
     public boolean isHidden() {
         return hidden;
     }
