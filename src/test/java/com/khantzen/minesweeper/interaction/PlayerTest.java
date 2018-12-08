@@ -67,6 +67,19 @@ public class PlayerTest {
     }
 
     @Test
+    public void tooBigDimensionGivenTest() {
+        Mockito.when(this.input.askQuestion("Which dimensions would you like for your MineField ? (width x length)"))
+                .thenReturn("150x785");
+
+        try {
+            this.player.askForFieldSize();
+            fail("This method is supposed to throw a parse exception");
+        } catch (ParseException ex) {
+            Assertions.assertThat(ex.getMessage()).contains("Maximum width and height allowed is 99");
+        }
+    }
+
+    @Test
     public void zeroHeightDimensionGivenTest() {
         Mockito.when(this.input.askQuestion("Which dimensions would you like for your MineField ? (width x length)"))
                 .thenReturn("45x00000");

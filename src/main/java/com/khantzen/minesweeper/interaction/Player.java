@@ -10,7 +10,11 @@ import java.util.regex.Pattern;
 public class Player {
     private final Input playerInput;
 
-    public Player(Input playerInput) {
+    public Player() {
+        this.playerInput = new Input();
+    }
+
+    Player(Input playerInput) {
         this.playerInput = playerInput;
     }
 
@@ -39,9 +43,14 @@ public class Player {
             throw new ParseException("Field width can't be zero.", 0);
         }
 
+
         int height = Integer.parseInt(fieldDimensionsMatcher.group("height"));
-        if (height  == 0) {
+        if (height == 0) {
             throw new ParseException("Field height can't be zero.", 0);
+        }
+
+        if (width >= 100 || height >= 100) {
+            throw new ParseException("Maximum width and height allowed is 99", 0);
         }
     }
 

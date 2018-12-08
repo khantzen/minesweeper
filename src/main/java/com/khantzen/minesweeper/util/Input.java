@@ -11,6 +11,6 @@ public class Input {
 
     public String askQuestion(String question) {
         System.out.println(question);
-        return this.scanner.next();
+        return this.scanner.nextLine();
     }
 }
