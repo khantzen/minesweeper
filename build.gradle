@@ -11,6 +11,12 @@ repositories {
     mavenCentral()
 }
 
+task run(type: JavaExec) {
+    description = "Run mine sweeper"
+    main = 'com.khantzen.minesweeper.MineSweeperMain'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.4'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'

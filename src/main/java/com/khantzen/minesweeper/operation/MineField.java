@@ -45,10 +45,6 @@ public class MineField {
 
     }
 
-    public MineCell getCell(int line, int column) {
-        return this.grid[line][column];
-    }
-
     public String getStatus() {
         int uncoveredCell = 0;
         int mineCount = 0;
@@ -190,5 +186,9 @@ public class MineField {
                 col.reveal();
             }
         }
+    }
+
+    MineCell getCell(int line, int column) {
+        return this.grid[line][column];
     }
 }
