@@ -22,7 +22,7 @@ public class MineFieldStatusTest {
     }
 
     @Test
-    public void terminatedMineFieldTest() {
+    public void terminatedMineFieldWithNoMineTest() {
         String testField = "" +
                 "0000;" +
                 "0000;" +
@@ -31,6 +31,24 @@ public class MineFieldStatusTest {
         MineField mineField = getMineField(testField);
 
         mineField.uncoverCell(0, 0);
+
+        String mineFieldStatus = mineField.getStatus();
+
+        Assertions.assertThat(mineFieldStatus).isEqualTo("TERMINATED");
+    }
+
+    @Test
+    public void terminatedMineFieldWithTwoMinesTest() {
+        String testField = "" +
+                "11000;" +
+                "*1011;" +
+                "1101*";
+
+        MineField mineField = getMineField(testField);
+
+        mineField.uncoverCell(0, 4);
+        mineField.uncoverCell(0, 0);
+        mineField.uncoverCell(2, 0);
 
         String mineFieldStatus = mineField.getStatus();
 

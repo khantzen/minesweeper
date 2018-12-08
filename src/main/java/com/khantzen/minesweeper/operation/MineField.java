@@ -51,6 +51,7 @@ public class MineField {
 
     public String getStatus() {
         int uncoveredCell = 0;
+        int mineCount = 0;
 
         for (MineCell[] cellLine : this.grid) {
             for (MineCell cell : cellLine) {
@@ -61,12 +62,16 @@ public class MineField {
                         uncoveredCell++;
                     }
                 }
+
+                if (cell.isMined()) {
+                    mineCount++;
+                }
             }
         }
 
         int totalCells = getTotalCells();
 
-        return uncoveredCell == totalCells ? "TERMINATED" : "ON_GOING";
+        return uncoveredCell == (totalCells - mineCount) ? "TERMINATED" : "ON_GOING";
     }
 
     private int getTotalCells() {
@@ -147,24 +152,43 @@ public class MineField {
     }
 
     public void printGrid() {
+        System.out.print("    ");
+        for (int col = 0; col < this.grid[0].length; col++) {
+            printXCoordinate(col);
+        }
+        System.out.println();
         for (int line = 0; line < this.grid.length; line++) {
-            // System.out.print(line + "|");
+            printYCoordinate(line);
             for (int col = 0; col < this.grid[line].length; col++) {
-                System.out.print(this.grid[line][col].toString() + " |");
+                System.out.print(" " + this.grid[line][col].toString() + " |");
             }
             System.out.println();
         }
     }
 
-    public void revealAllGrid() {
-        for (int line = 0; line < this.grid.length; line++) {
-            for (int col = 0; col < this.grid[line].length; col++) {
-                this.grid[line][col].reveal();
-            }
+    private void printYCoordinate(int line) {
+        String print = line + "";
+
+        if (line < 10) {
+            print = "0" + print;
         }
+
+        System.out.print("Y" + print + "|");
     }
 
-    MineCell[][] getGrid() {
-        return grid;
+    private void printXCoordinate(int col) {
+        String print = col + "";
+        if (col < 10) {
+            print = "0" + print;
+        }
+        System.out.print("X" + print + "|");
+    }
+
+    public void revealAllGrid() {
+        for (MineCell[] line : this.grid) {
+            for (MineCell col : line) {
+                col.reveal();
+            }
+        }
     }
 }

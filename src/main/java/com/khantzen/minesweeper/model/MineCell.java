@@ -38,7 +38,7 @@ public class MineCell {
     @Override
     public String toString() {
         if (this.isHidden()) {
-            return "X";
+            return "+";
         } else if (this.cellValue == -1) {
             return "*";
         } else {
