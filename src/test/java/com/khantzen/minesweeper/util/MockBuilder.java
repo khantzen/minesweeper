@@ -1,10 +1,9 @@
 package com.khantzen.minesweeper.util;
 
 import com.khantzen.minesweeper.model.MineCell;
-import com.khantzen.minesweeper.operation.MineField;
 
 public class MockBuilder {
-    public static MineField convertStringToMineField(String mineField) {
+    public static MineCell[][] convertStringToGrid(String mineField) {
         String[] fieldLine = mineField.split(";");
 
         int length = fieldLine[0].length();
@@ -26,6 +25,6 @@ public class MockBuilder {
             }
         }
 
-        return new MineField(grid);
+        return grid;
     }
 }

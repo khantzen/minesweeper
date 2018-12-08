@@ -1,7 +1,7 @@
 package com.khantzen.minesweeper.model;
 
 public class MineCell {
-    private final int cellValue;
+    private int cellValue;
     private boolean hidden;
 
     public MineCell(int cellValue) {
@@ -13,8 +13,18 @@ public class MineCell {
         return cellValue;
     }
 
+    public void incrementCellValue() {
+        if (this.cellValue != -1) {
+            this.cellValue++;
+        }
+    }
+
     public boolean isMined() {
         return this.cellValue == -1;
+    }
+
+    public void setUpMine() {
+        this.cellValue = -1;
     }
 
     public boolean isHidden() {
@@ -23,5 +33,16 @@ public class MineCell {
 
     public void reveal() {
         this.hidden = false;
+    }
+
+    @Override
+    public String toString() {
+        if (this.isHidden()) {
+            return "X";
+        } else if (this.cellValue == -1) {
+            return "*";
+        } else {
+            return this.cellValue + "";
+        }
     }
 }

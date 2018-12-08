@@ -1,6 +1,6 @@
 package com.khantzen.minesweeper.interaction;
 
-import com.khantzen.minesweeper.model.Coordinates;
+import com.khantzen.minesweeper.model.Coordinate;
 import com.khantzen.minesweeper.util.Input;
 
 import java.text.ParseException;
@@ -62,7 +62,7 @@ public class Player {
         return mineCount;
     }
 
-    public Coordinates askForCoordinates(int width, int height) throws ParseException {
+    public Coordinate askForCoordinates(int width, int height) throws ParseException {
         String wishedCellCoord =
                 this.playerInput.askQuestion("Which case do you want to reveal ? (x,y)");
 
@@ -80,6 +80,6 @@ public class Player {
             throw new ParseException("Chosen case is out of field", 0);
         }
 
-        return new Coordinates(coordX, coordY);
+        return new Coordinate(coordX, coordY);
     }
 }

@@ -1,5 +1,6 @@
 package com.khantzen.minesweeper.operation;
 
+import com.khantzen.minesweeper.model.MineCell;
 import com.khantzen.minesweeper.util.MockBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class MineFieldUncoverTest {
                 "151;" +
                 "111";
 
-        MineField mineField = MockBuilder.convertStringToMineField(testField);
+        MineField mineField = getMineField(testField);
 
         mineField.uncoverCell(1, 1);
 
@@ -28,7 +29,7 @@ public class MineFieldUncoverTest {
                 "1101;" +
                 "0*10";
 
-        MineField mineField = MockBuilder.convertStringToMineField(testField);
+        MineField mineField = getMineField(testField);
 
         mineField.uncoverCell(1, 2);
 
@@ -36,6 +37,11 @@ public class MineFieldUncoverTest {
         Assertions.assertThat(mineField.getCell(2, 2).isHidden()).isFalse();
         Assertions.assertThat(mineField.getCell(0, 3).isHidden()).isFalse();
         Assertions.assertThat(mineField.getCell(0, 0).isHidden()).isFalse();
+    }
+
+    private MineField getMineField(String testField) {
+        MineCell[][] grid = MockBuilder.convertStringToGrid(testField);
+        return new MineField(grid);
     }
 
 }

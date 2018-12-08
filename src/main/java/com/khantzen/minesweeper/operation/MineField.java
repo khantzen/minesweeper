@@ -1,19 +1,31 @@
 package com.khantzen.minesweeper.operation;
 
+import com.khantzen.minesweeper.model.Coordinate;
 import com.khantzen.minesweeper.model.MineCell;
+import com.khantzen.minesweeper.util.RandomGenerator;
 
 public class MineField {
-    private final MineCell[][] board;
+    private RandomGenerator randomGenerator;
 
-    public MineField(MineCell[][] board) {
-        this.board = board;
+    private MineCell[][] grid;
+
+    public MineField() {
+        this.randomGenerator = new RandomGenerator();
+    }
+
+    MineField(MineCell[][] board) {
+        this.grid = board;
+    }
+
+    MineField(RandomGenerator randomGenerator) {
+        this.randomGenerator = randomGenerator;
     }
 
     public void uncoverCell(int line, int column) {
         MineCell mineCell;
 
         try {
-            mineCell = this.board[line][column];
+            mineCell = this.grid[line][column];
             if (!mineCell.isHidden())
                 return;
         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -34,13 +46,13 @@ public class MineField {
     }
 
     public MineCell getCell(int line, int column) {
-        return this.board[line][column];
+        return this.grid[line][column];
     }
 
     public String getStatus() {
         int uncoveredCell = 0;
 
-        for (MineCell[] cellLine : this.board) {
+        for (MineCell[] cellLine : this.grid) {
             for (MineCell cell : cellLine) {
                 if (!cell.isHidden()) {
                     if (cell.isMined()) {
@@ -58,6 +70,101 @@ public class MineField {
     }
 
     private int getTotalCells() {
-        return this.board.length * this.board[0].length;
+        return this.grid.length * this.grid[0].length;
+    }
+
+    public void init(int width, int height, int mineCount) {
+        this.grid = new MineCell[height][width];
+
+        for (int line = 0; line < this.grid.length; line++) {
+            for (int col = 0; col < this.grid[line].length; col++) {
+                this.grid[line][col] = new MineCell(0);
+            }
+        }
+
+        for (int i = 0; i < mineCount; i++) {
+            Coordinate mineCoordinate = getNextMineCoordinates(width, height);
+            this.setUpMine(mineCoordinate);
+        }
+    }
+
+    private Coordinate getNextMineCoordinates(int width, int height) {
+        Coordinate mineCoordinate = this.randomGenerator.getRandomCoordinate(width, height);
+
+        if (this.grid[mineCoordinate.getY()][mineCoordinate.getX()].isMined()) {
+            return getNextMineCoordinates(width, height);
+        }
+
+        return mineCoordinate;
+    }
+
+    private void setUpMine(Coordinate coord) {
+        int line = coord.getY();
+        int col = coord.getX();
+
+        this.grid[line][col].setUpMine();
+
+        int aboveLine = line - 1;
+        int afterLine = line + 1;
+
+        int aboveColumn = col - 1;
+        int afterColumn = col + 1;
+
+        int lineCount = this.grid.length;
+        int columnCount = this.grid[0].length;
+
+        if (aboveLine >= 0) {
+            this.grid[aboveLine][col].incrementCellValue();
+
+            if (aboveColumn >= 0) {
+                this.grid[aboveLine][aboveColumn].incrementCellValue();
+            }
+
+            if (afterColumn < columnCount) {
+                this.grid[aboveLine][afterColumn].incrementCellValue();
+            }
+        }
+
+        if (aboveColumn >= 0) {
+            this.grid[line][aboveColumn].incrementCellValue();
+
+            if (afterLine < lineCount) {
+                this.grid[afterLine][aboveColumn].incrementCellValue();
+            }
+        }
+
+        if (afterColumn < columnCount) {
+            this.grid[line][afterColumn].incrementCellValue();
+        }
+
+        if (afterLine < lineCount) {
+            this.grid[afterLine][col].incrementCellValue();
+
+            if (afterColumn < columnCount) {
+                this.grid[afterLine][afterColumn].incrementCellValue();
+            }
+        }
+    }
+
+    public void printGrid() {
+        for (int line = 0; line < this.grid.length; line++) {
+            // System.out.print(line + "|");
+            for (int col = 0; col < this.grid[line].length; col++) {
+                System.out.print(this.grid[line][col].toString() + " |");
+            }
+            System.out.println();
+        }
+    }
+
+    public void revealAllGrid() {
+        for (int line = 0; line < this.grid.length; line++) {
+            for (int col = 0; col < this.grid[line].length; col++) {
+                this.grid[line][col].reveal();
+            }
+        }
+    }
+
+    MineCell[][] getGrid() {
+        return grid;
     }
 }

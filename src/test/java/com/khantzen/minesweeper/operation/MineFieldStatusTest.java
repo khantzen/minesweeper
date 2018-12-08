@@ -1,5 +1,6 @@
 package com.khantzen.minesweeper.operation;
 
+import com.khantzen.minesweeper.model.MineCell;
 import com.khantzen.minesweeper.util.MockBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class MineFieldStatusTest {
                 "1101;" +
                 "1*10";
 
-        MineField mineField = MockBuilder.convertStringToMineField(testField);
+        MineField mineField = getMineField(testField);
 
         String mineFieldStatus = mineField.getStatus();
 
@@ -27,7 +28,7 @@ public class MineFieldStatusTest {
                 "0000;" +
                 "0000";
 
-        MineField mineField = MockBuilder.convertStringToMineField(testField);
+        MineField mineField = getMineField(testField);
 
         mineField.uncoverCell(0, 0);
 
@@ -43,13 +44,18 @@ public class MineFieldStatusTest {
                 "1101;" +
                 "1*10";
 
-        MineField mineField = MockBuilder.convertStringToMineField(testField);
+        MineField mineField = getMineField(testField);
 
         mineField.uncoverCell(2, 1);
 
         String mineFieldStatus = mineField.getStatus();
 
         Assertions.assertThat(mineFieldStatus).isEqualTo("DOOMED");
+    }
+
+    private MineField getMineField(String testField) {
+        MineCell[][] grid = MockBuilder.convertStringToGrid(testField);
+        return new MineField(grid);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.khantzen.minesweeper.interaction;
 
-import com.khantzen.minesweeper.model.Coordinates;
+import com.khantzen.minesweeper.model.Coordinate;
 import com.khantzen.minesweeper.util.Input;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -120,7 +120,7 @@ public class PlayerTest {
         Mockito.when(this.input.askQuestion("Which case do you want to reveal ? (x,y)"))
                 .thenReturn("(15,36)");
 
-        Coordinates coord = this.player.askForCoordinates(20, 85);
+        Coordinate coord = this.player.askForCoordinates(20, 85);
 
         Assertions.assertThat(coord.getX()).isEqualTo(15);
         Assertions.assertThat(coord.getY()).isEqualTo(36);
